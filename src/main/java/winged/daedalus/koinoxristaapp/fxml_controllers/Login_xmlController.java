@@ -13,7 +13,7 @@ import winged.daedalus.koinoxristaapp.ScreensFramework;
 
 /**
  *
- * @author tsirkos
+ * Created by TeoGia on Jul 7, 2015
  */
 public class Login_xmlController implements ControlledScreen {
 	

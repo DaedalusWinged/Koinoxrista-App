@@ -11,7 +11,7 @@ import winged.daedalus.koinoxristaapp.screenhandling.ScreensController;
 
 /**
  * 
- * @author tsirkos
+ * Created by TeoGia on Jul 7, 2015
  */
 public class ScreensFramework extends Application {
 	

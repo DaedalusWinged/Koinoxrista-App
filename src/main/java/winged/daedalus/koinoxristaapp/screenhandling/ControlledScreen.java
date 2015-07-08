@@ -1,7 +1,7 @@
 package winged.daedalus.koinoxristaapp.screenhandling;
 
 /**
- * Created by tsirkos on Jul 7, 2015
+ * Created by TeoGia on Jul 7, 2015
  */
 public interface ControlledScreen {
 	

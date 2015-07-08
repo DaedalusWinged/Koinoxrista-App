@@ -2,6 +2,7 @@ package winged.daedalus.koinoxristaapp.screenhandling;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -15,20 +16,34 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import winged.daedalus.koinoxristaapp.logger.MyHTMLFormatter;
 
 /**
- * Created by tsirkos on Jul 7, 2015
+ * Created by TeoGia on Jul 7, 2015
  */
 public class ScreensController extends StackPane {
 	
 	private final static Logger LOGGER = Logger.getLogger(ScreensController.class.getName());
 	private final HashMap<String, Node> screens;//TODO recompile with Xlint to see if i can get rid of the compilation warnings about unsafe operations
-	
+	private FileHandler fileHandler = null;
+	private static MyHTMLFormatter formatter;
 	/**
 	 * This is the constructor
 	 */
 	public ScreensController() {
 		LOGGER.setLevel(Level.ALL);
+		
+		try {
+			fileHandler = new FileHandler("ScreenFreamework", true);
+			LOGGER.addHandler(fileHandler);
+			formatter =  new MyHTMLFormatter();
+			fileHandler.setFormatter(formatter);
+		} catch (SecurityException e) {
+			LOGGER.log(Level.SEVERE, "SecurityException during FileHandler's init phase.", e);
+		} catch (IOException e){
+			LOGGER.log(Level.SEVERE, "IOException during FileHandler's init phase.", e);
+		}
+		
 		this.screens = new HashMap<String, Node>();
 	}
 	
@@ -60,6 +75,7 @@ public class ScreensController extends StackPane {
 			ControlledScreen myScreenController = ((ControlledScreen) myLoader.getController());
 			myScreenController.setScreenParent(this);
 			addScreen(name, loadScreen);
+			LOGGER.log(Level.FINE, "Screen {0} was loaded successfully.", name);
 			return true;
 		} catch (IOException ex) {
 			LOGGER.log(Level.SEVERE, "IOException", ex);
@@ -112,7 +128,7 @@ public class ScreensController extends StackPane {
 			}
 			return true;
 		} else {
-			LOGGER.log(Level.WARNING, "Screen hasn't been loaded yet!");
+			LOGGER.log(Level.WARNING, "Screen {0} hasn't been loaded yet!", name);
 			return false;
 		}
 	}
@@ -125,7 +141,7 @@ public class ScreensController extends StackPane {
 	 */
 	public boolean unloadScreen(String name) {
 		if (screens.remove(name) == null) {
-			LOGGER.log(Level.WARNING, "Screen didn't exist in the HashMap!");
+			LOGGER.log(Level.WARNING, "Screen {0} does not exist in the HashMap!", name);
 			return false;
 		} else {
 			return true;
